@@ -5,14 +5,27 @@
   <title>第一堂課程式互動</title>
 </head>
 <body>
-  <h1 id="msg">Hello World!</h1>
-  <button onclick="changeMessage()">點我改變文字</button> 
+  <h1 id="msg">Hello World!</h1>   //h1~h6標題，id為標籤中間的文字命名(獨一無二)
+  <button onclick="changeMessage()">點我改變文字</button>  
 
-  <script>
+  <!--button按鈕標籤，on當發生...事，onclick==當按鈕被按下時(屬性)
+  changeMessage為函數，後面()括號中可傳參數/寫入參數，目前無
+  當按鈕被按下時執行函數，下方function定義該函數-->
+  
+  <script>  //寫入JavaScript的區域
     function changeMessage() {
       document.getElementById("msg").innerText = "你剛剛寫了一個程式！";
     }
   </script>
+
+  <!--JavaScript中{}大括號為開始結束
+  有規則可循、固定做法時使用function，後面配函數名稱
+  沒有被包在function內(被呼叫才執行)，就是直接執行-->
+
+  <!--document指執行的網頁，先宣明是這個網頁要執行動作
+  get Element By Id ("msg")==去找到Id叫做msg的那個元素(標籤位置)
+  inner標籤裡面夾起來的文字Text/程式碼設定HTML="新的文字內容"，將標籤內文字替換為新的文字內容-->
+  
 </body>
 </html>
 
