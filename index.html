@@ -720,7 +720,7 @@
                                 </div>
                             `).join('')}
                         </div>
-                        <input type="hidden" name="timeSlots" id="selectedTimeSlots">
+                        <input type="hidden" name="timeSlots" id="selectedTimeSlots" value="${time || ''}">
                     </div>
                     <div class="form-group">
                         <label>教室</label>
@@ -730,12 +730,12 @@
                 </form>
             `;
             
-            // 如果有預設時間，則設定選中狀態
-            if (time) {
-                updateSelectedTimeSlots();
-            }
-            
             document.getElementById('modal').style.display = 'block';
+            
+            // 確保選中的時間段被正確設定
+            setTimeout(() => {
+                updateSelectedTimeSlots();
+            }, 100);
         }
 
         // 切換時間選擇
@@ -879,30 +879,69 @@
         function addSchedule(event) {
             event.preventDefault();
             const formData = new FormData(event.target);
-            const selectedTimes = formData.get('timeSlots').split(',').filter(t => t);
+            let selectedTimes = formData.get('timeSlots');
+            
+            // 處理時間選擇
+            if (!selectedTimes || selectedTimes === '') {
+                alert('請選擇至少一個時間段');
+                return;
+            }
+            
+            selectedTimes = selectedTimes.split(',').filter(t => t.trim() !== '');
             
             if (selectedTimes.length === 0) {
                 alert('請選擇至少一個時間段');
                 return;
             }
             
-            const subject = subjects.find(s => s.id === formData.get('subject'));
+            const subjectId = formData.get('subject');
+            const subject = subjects.find(s => s.id === subjectId);
+            
+            if (!subject) {
+                alert('請選擇有效的科目');
+                return;
+            }
+            
             const day = formData.get('day');
             const room = formData.get('room');
+            
+            if (!day) {
+                alert('請選擇星期');
+                return;
+            }
+            
+            // 檢查時間衝突
+            let conflicts = [];
+            selectedTimes.forEach(time => {
+                const scheduleKey = `${day}-${time}`;
+                if (schedule[scheduleKey]) {
+                    conflicts.push(time);
+                }
+            });
+            
+            if (conflicts.length > 0) {
+                if (!confirm(`以下時間段已有課程：${conflicts.join(', ')}。是否要覆蓋現有課程？`)) {
+                    return;
+                }
+            }
             
             // 為每個選中的時間段創建課程
             selectedTimes.forEach(time => {
                 const scheduleKey = `${day}-${time}`;
                 schedule[scheduleKey] = {
                     subject: subject,
-                    room: room
+                    room: room || ''
                 };
             });
             
-            addRecord('新增課程', `新增課程：${subject.name} (${dayNames[days.indexOf(day)]} ${selectedTimes.join(', ')})`);
+            const dayName = dayNames[days.indexOf(day)];
+            addRecord('新增課程', `新增課程：${subject.name} (${dayName} ${selectedTimes.join(', ')})`);
             saveData();
             updateScheduleView();
             closeModal();
+            
+            // 顯示成功訊息
+            showMessage('success', `成功新增課程：${subject.name}`);
         }
 
         // 新增進度
