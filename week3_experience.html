@@ -1,4 +1,4 @@
-#week3_20250925
+//week3_20250925
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +6,26 @@
   <title>第三堂課20250925</title>
 </head>
 <body>
+  <h2 id="result">今天中午吃什麼？</h2>
+<button onclick="pickFood()">抽籤！</button>
+
+<script>
+function pickFood() {
+  let foods = ["便當", "炒飯", "牛肉麵", "壽司", "漢堡"];        //設定foods為陣列(array)
+  let randIndex = Math.floor(Math.random() * foods.length);  
+  document.getElementById("result").innerText = foods[randIndex];
+}
+</script>
+
+'''
+Math.random()產出0~1的隨機數值(0.00...001~0.99999...)
+foods.length表示foods陣列的長度
+Math.random乘以一個數(e.g. 5)，結果變成0~4
+Math.floor取下限求整數(去掉小數點/無條件捨去到整數位)
+可使用alert(randIndex);得知實際抽中數值
+因為Math.floor將randIndex變成整數，因此foods[randIndex]會根據randIndex的值出現對應字串
+e.g. foods[0]結果為便當
+'''
   
 </body>
 </html>
