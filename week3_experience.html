@@ -20,13 +20,13 @@
   </script>
 
 <!--
-Math.random()產出0~1的隨機數值(0.00...001~0.99999...)
-foods.length表示foods陣列的長度
-Math.random乘以一個數(e.g. 5)，結果變成0~4
-Math.floor取下限求整數(去掉小數點/無條件捨去到整數位)
-可使用alert(randIndex);得知實際抽中數值
-因為Math.floor將randIndex變成整數，因此foods[randIndex]會根據randIndex的值出現對應字串
-e.g. foods[0]結果為便當
+  Math.random()產出0~1的隨機數值(0.00...001~0.99999...)
+  foods.length表示foods陣列的長度
+  Math.random乘以一個數(e.g. 5)，結果變成0~4
+  Math.floor取下限求整數(去掉小數點/無條件捨去到整數位)
+  可使用alert(randIndex);得知實際抽中數值
+  因為Math.floor將randIndex變成整數，因此foods[randIndex]會根據randIndex的值出現對應字串
+  e.g. foods[0]結果為便當
 -->
 
 //文字會切換的版本(版本6：文字快速閃爍)
@@ -50,10 +50,11 @@ e.g. foods[0]結果為便當
   </script>
 
 <!--
-setTimeout
-setInterval
-clearInterval
-()=>{}
+  var變數 = setInterval(function函數, time時間)
+  setTimeout(function, time)：定時器，時間到後執行該function(單次)
+  setInterval(function, time)：計時器，設定多久時間執行function一次(重複次)
+  clearInterval(var變數)：停止該變數的動作，終止計時器
+  ()=>{} 設定一個空白function，指定大括號內的內容為該空白function，不用額外獨立命名一個function
 -->
 
 //加入圖片、單純顯示圖片文字的版本(版本5：抽籤+圖片)
@@ -62,8 +63,8 @@ clearInterval
 
   <script>
   function pickFood() {
-  let foods = [
-    {name: "便當", img: "https://pic.pngsucai.com/00/87/05/9e1c2cdce2519ccc.webp"},
+  let foods = [             
+    {name: "便當", img: "https://pic.pngsucai.com/00/87/05/9e1c2cdce2519ccc.webp"},   
     {name: "炒飯", img: "https://pic.pngsucai.com/01/01/22/b8c1752bff44f5d1.webp"},
     {name: "牛肉麵", img: "https://pic.pngsucai.com/00/97/95/35f4d876b11ed68f.webp"}
   ];
@@ -76,6 +77,14 @@ clearInterval
   }
   </script>
 <!--
+  陣列［］中的欄位，自行命名（有意義更好）
+  name:____
+  後面呼籲choice.name，就是呼叫這個欄位（點.可以解釋成"裡面的"）
+  img src='     '  語法上就需要用引號包起來
+  字串連接起來 +（兜出來）
+  choice.name +  " <br><img src=' "  +  choice.img  +  " 'width='150'> "  >>可視為A+"B"+C+"D"
+  中間有標籤的就需要加入雙引號""，如果是變數名稱則不用
+
 -->
   
 </body>
@@ -83,17 +92,26 @@ clearInterval
 
 <!--
 if說明
-if、switch、陣列比較
+JavaScript中，if、else if、else各自範圍要用{}包住（條件成立會執行大括號內的東西
+若條件成立與否只有一個動作(一行)則可以省略大括號（不過大括號留著比較好）
+用變數去執行if、else，最後再改變內文為變數（doc...getElementById...）夾在function中比較好
+-->
+
+<!--
+if：4選1概念。執一次硬幣，正執行，反再執一次，之後重複一次到有4個選擇。（if像是比賽要比很多次才會有結果）
+switch：［使用物件導向(和現實中有關)］，case__:設定欲執行的條件(equal完全等於)，換行寫入欲執行動作; 再換行寫break;表示結束(跳出switch這個大括號)。
+        若非設定好之case，則可寫default表示預設動作。若無寫break，會忽略前面條件case直接執行接下來，直到做到break那行為止。（switch像是摸彩一次就中）
+陣列：資料結構(必修)，food = ［"A", "B", "C", "D", "E"］，food［0］結果為A。food.length可得知陣列長度。（陣列像擺好盒子，抽號碼開盒子）
 -->
 
 <!--
 補充：
-script標籤中每行的結尾要加;
-d.toLocaleTimeString 現在的時間，透過設定每秒改變一次時間(覆蓋上去)，看起來就動起來了。
-array 陣列
-comparsion 大小於
-alert(變數)可以得知變數=Math.random()的實際數值
-let讓、var定義、const，概念差不多都是assign變數~?
-(in JavaScript)new：物件導向概念?
+  script標籤中每行的結尾要加;
+  d.toLocaleTimeString 現在的時間，透過設定每秒改變一次時間(覆蓋上去)，看起來就動起來了。
+  array 陣列
+  comparsion 大小於
+  alert(變數)可以得知變數=Math.random()的實際數值
+  let讓、var定義、const，概念差不多都是assign變數~?
+  (in JavaScript)new：物件導向概念?
 -->
 
