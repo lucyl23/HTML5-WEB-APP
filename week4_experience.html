@@ -5,6 +5,32 @@
   <title>第四堂課20251002</title>
 </head>
 <body>
+//說明變數宣告位置(超連結在setInterval()後面)。版本6：文字快速閃爍
+  <h2>今天中午吃什麼？</h2>
+  <div id="result">？？？</div>
+  <button onclick="draw()">開始抽籤</button>
+
+<script>
+const foods = ["壽司","牛排","滷肉飯","火鍋","拉麵"];
+
+//整體性變數，宣告於所有function外
+let counter = 0;       // 記錄次數
+let intervalId = null; // 存放 setInterval 的 ID
+
+function changeFood() {
+  const pick = foods[Math.floor(Math.random() * foods.length)];
+  document.getElementById("result").innerText = pick;
+  counter++;
+  if (counter > 10) {
+    clearInterval(intervalId); // 呼叫intervalID，停止setInterval
+  }
+}
+
+function draw() {
+  counter = 0;  // 設定每次執行function時counter=0，重新開始
+  intervalId = setInterval(changeFood, 100); // 每0.1秒呼叫 changeFood
+}
+</script>
   
 </body>
 </html>
