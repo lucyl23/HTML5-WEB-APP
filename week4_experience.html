@@ -13,7 +13,7 @@
   <script>
   const foods = ["壽司","牛排","滷肉飯","火鍋","拉麵"];
 
-  //整體性變數，宣告於所有function外
+  //整體性變數：宣告於所有function外 <----> 區域性變數
   let counter = 0;       // 記錄次數
   let intervalId = null; // 存放 setInterval 的 ID
 
@@ -31,6 +31,15 @@
     intervalId = setInterval(changeFood, 100); // 每0.1秒呼叫 changeFood
   }
   </script>
+
+  <!--
+  【整體性變數 vs. 區域性變數】
+  整體性變數/全域變數：宣告在所有函數最外面，像是放在客廳的箱子，從任何房間(function)都可以看得到、都可以使用該箱子
+  區域性變數/局部變數：宣告於某個函數中，不能與其他function共用該變數，即使名稱相同，還是算兩個不同變數(不能共用)。function執行完該變數也會跟著消失。
+  依需求根據不同功能位置宣告變數。若有兩個以上的function需要同一個變數時，就在function外宣告整體性變數。
+  -->
+
+  
 //------------相片瀏覽功能：版本2 多張圖片，各自函數 - innerHTML + 陣列-----------------------
   <div id="photoContainer"></div>
   <br><br>
@@ -42,22 +51,22 @@
     const photos = ["http://1.bp.blogspot.com/-xdHGOG59LCI/UjawN7V-deI/AAAAAAAABb8/v3dHRriJkjo/s1600/EUCL%E4%B8%8A%E5%8F%B0%E9%A0%98%E7%8D%8E01.jpg", 
                     "http://4.bp.blogspot.com/-UKB9Pburh8I/Ujawb7t3wGI/AAAAAAAABcE/2h3OMM1sb-0/s1600/Frocius+Android%E4%B8%8A%E5%8F%B0%E9%A0%98%E7%8D%8E01.jpg", 
                     "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjUJYAY6cEyvTthq9s3Pz3RCayzcOM7UVffF8cmCk0XZBaAz7O6tLktSa7e1_f7Ni_ZxZaD8p4tLzqzhqnHo8rnsKuYvhPflJr2mAZeOSayg3sHjXCrrOtJ7cqPP6OdZAEJsHYJ5QWPTXw/s640/R0010396.JPG"];
-    let index = 0;
-    const container = document.getElementById("photoContainer");
+    let index = 0;                                                            //宣告變數index(整體性變數)，作為陣列中數值來換照片
+    const container = document.getElementById("photoContainer");              //assign變數container為document.getElementById("photoContainer")在這個網頁中找到Id為photoContainer的值
 
     function updateView() {
-      container.innerHTML = '<img src="' + photos[index] + '" width="300">';
+      container.innerHTML = '<img src="' + photos[index] + '" width="300">';  //令函數updateView：使用變數container，.innerHTML更換Id內HTML為：'A'+B+'C'，也就是設定該函數的動作換照片
     }
 
-    function showPrev() {
-      if (index > 0) {
+    function showPrev() {                      //令函數showPrev：若index>0，index減1，執行函數updateView
+      if (index > 0) {                         //if條件中設定index邊界，(上下兩段)讓index停在0~2之間，也就是陣列中有值的區間
         index = index - 1;
         updateView();
       }
     }
 
-    function showNext() {
-      if (index < photos.length - 1) {
+    function showNext() {                      //令函數showNext：若index小於陣列photos的長度減1，index+1，執行函數updateView
+      if (index < photos.length - 1) {        
         index = index + 1;
         updateView();
       }
