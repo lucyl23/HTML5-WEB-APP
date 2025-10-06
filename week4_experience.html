@@ -51,15 +51,16 @@
     const photos = ["http://1.bp.blogspot.com/-xdHGOG59LCI/UjawN7V-deI/AAAAAAAABb8/v3dHRriJkjo/s1600/EUCL%E4%B8%8A%E5%8F%B0%E9%A0%98%E7%8D%8E01.jpg", 
                     "http://4.bp.blogspot.com/-UKB9Pburh8I/Ujawb7t3wGI/AAAAAAAABcE/2h3OMM1sb-0/s1600/Frocius+Android%E4%B8%8A%E5%8F%B0%E9%A0%98%E7%8D%8E01.jpg", 
                     "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjUJYAY6cEyvTthq9s3Pz3RCayzcOM7UVffF8cmCk0XZBaAz7O6tLktSa7e1_f7Ni_ZxZaD8p4tLzqzhqnHo8rnsKuYvhPflJr2mAZeOSayg3sHjXCrrOtJ7cqPP6OdZAEJsHYJ5QWPTXw/s640/R0010396.JPG"];
-    let index = 0;                                                            //宣告變數index(整體性變數)，作為陣列中數值來換照片
-    const container = document.getElementById("photoContainer");              //assign變數container為document.getElementById("photoContainer")在這個網頁中找到Id為photoContainer的值
+    let index = 0;                                                       //宣告變數index(整體性變數)，作為陣列中數值來換照片
+    const container = document.getElementById("photoContainer");         //assign變數container為document.getElementById("photoContainer")在這個網頁中找到Id為photoContainer的值
 
     function updateView() {
-      container.innerHTML = '<img src="' + photos[index] + '" width="300">';  //令函數updateView：使用變數container，.innerHTML更換Id內HTML為：'A'+B+'C'，也就是設定該函數的動作換照片
+      container.innerHTML = '<img src="' + photos[index] + '" width="300">';  
+      //令函數updateView：使用變數container，.innerHTML更換Id內HTML為：'A'+B+'C'，也就是設定該函數的動作換照片
     }
 
-    function showPrev() {                      //令函數showPrev：若index>0，index減1，執行函數updateView
-      if (index > 0) {                         //if條件中設定index邊界，(上下兩段)讓index停在0~2之間，也就是陣列中有值的區間
+    function showPrev() {               //令函數showPrev：若index>0，index減1，執行函數updateView
+      if (index > 0) {                  //if條件中設定index邊界，(上下兩段)讓index停在0~2之間，也就是陣列中有值的區間
         index = index - 1;
         updateView();
       }
@@ -72,7 +73,7 @@
       }
     }
 
-    updateView(); // 初始顯示
+    updateView();   //初始顯示
   </script>
 
 //----------------相片瀏覽功能：版本3 陣列 + 單一函式 + 傳參數------------------------------------------------
@@ -94,17 +95,24 @@
     }
 
     function changePhoto(step) {
-      const newIndex = index + step;
-      if (newIndex >= 0 && newIndex < photos.length) {
-        index = newIndex;
-        updateView();
+      const newIndex = index + step;                      //宣告變數newIndex去儲存變數index +1-1計算後的值，因為只會在函數changePhoto中使用到該函數，只需為區域性變數即可。
+      if (newIndex >= 0 && newIndex < photos.length) {    //條件判斷newIndex在計算完後是否於陣列photos的範圍中
+        index = newIndex;                                 //將index的值assign為newIndex的值
+        updateView();                                     //執行updateView函數
       }
     }
 
-    updateView();
+    updateView();    //初始顯示
   </script>
 
-//--------------相片瀏覽功能：版本4 首尾循環---------
+<!--
+JavaScript Logical Operators
+&&    and
+||    or
+!     not
+-->
+
+//--------------相片瀏覽功能：版本4 首尾循環，可以上下切換---------
   <div id="photoContainer"></div>
   <p id="status"></p>
   <button onclick="changePhoto(-1)">上一張</button>
@@ -120,7 +128,7 @@
 
     function updateView() {
       container.innerHTML = '<img src="' + photos[index] + '" width="300">';
-      statusEl.textContent = (index + 1) + " / " + photos.length;
+      statusEl.textContent = (index + 1) + " / " + photos.length;      //顯示現在為第幾張照片/總共3張照片(e.g. 1/3、2/3、3/3)
     }
 
     function changePhoto(step) {
