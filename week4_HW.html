@@ -1,10 +1,117 @@
 <!--
+【作業指引】
 1.情境連結：相簿瀏覽是日常常見的功能（社群平台、電商相簿）。
 2.陣列的線性瀏覽 ：陣列是連續結構，必須正確維護索引才能依序取出元素。
 3.函式參數化：同一個函式可處理兩個動作。
 4.整體性變數：用來儲存「系統目前狀態」並在多次呼叫間保持一致。就像缺少全域 index，狀態每次都被重新初始化，功能失效。
 作業變化：
-加入自動播放（挑戰 setInterval()）。
+加入自動播放（挑戰 setInterval()）。如果手動按按鈕了就停止撥放，很久沒按按鈕就再次自動撥放。
 每張照片加上說明文字。
 支援鍵盤左右鍵切換
 -->
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自動播放相簿</title>
+    <style>
+        #photo {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="slideshow">
+        <img id="photo" src="" alt="照片">
+        <div id="description"></div>
+        <div class="controls">
+            <button id="prev">上一張</button>
+            <button id="next">下一張</button>
+        </div>
+    </div>
+
+    <script>
+             // 宣告陣列photos，包含圖片來源與描述
+        const photos = [
+            { url: 'https://images.unsplash.com/photo-1593483316242-efb5420596ca', description: '這是一隻貓' },
+            { url: 'https://www.poaipets.com.tw/wp-content/uploads/2021/03/%E5%89%96%E6%9E%90%E7%8B%97%E7%8B%97%E5%B8%B8%E8%A6%8B%E7%96%BE%E7%97%85.jpg', description: '這是一隻狗' },
+            { url: 'https://animal-friendly.co/wp-content/uploads/2023/02/5b7660ef9ebe9a7c0113f898f880ffad.jpg', description: '這是兩隻鵝' },
+            { url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREqdgOmPPAAHX0fYrBgNaAjV21EmDu91AXcQ&s', description: '這是五個月餅，中秋節快樂！' }
+        ];
+
+        let currentIndex = 0;            // 變數currentIndex為當前顯示的照片索引
+        let autoPlayInterval = null;     // 變數autoPlayInterval為自動播放的計時器
+        let isAutoPlaying = true;        // 變數isAutoPlaying用於判斷是否正在自動播放
+        let stopAutoPlayTimeout = null;  // 變數stopAutoPlayTimeout為停止自動播放後，等待5分鐘再重新啟動的計時器
+
+        // 函數showPhoto定義為顯示指定相片photos[0]、[1]、[2]、[3]
+        function showPhoto(index) {                                                          //index變數在此被宣告。函式參數本身就等於是變數宣告(作為區域性變數宣告)
+            document.getElementById('photo').src = photos[index].url;                        // 設定照片來源為photos[0]裡面的url
+            document.getElementById('description').textContent = photos[index].description;  // 顯示照片描述為photos[0]裡面的description
+        }
+
+        // 切換相片（上一張或下一張）
+        function changePhoto(direction) {
+            currentIndex = (currentIndex + direction + photos.length) % photos.length;
+            showPhoto(currentIndex); 
+            resetAutoPlay();  // 每次切換後重啟自動播放
+        }
+      
+      <!--
+        為何函數changePhoto的變數是使用direction而非index?
+        命名時要問自己一個問題：「這個參數到底是 什麼意思？我傳進來是想讓函數做 什麼事？」
+        一個位置 → index
+        一個改變的方向 → direction 在此為+1 or -1
+        一個秒數 → seconds
+        一個網址 → url
+        -->
+
+        // 自動播放（每3秒切換一次照片）
+        function startAutoPlay() {
+            if (!isAutoPlaying) return;
+            autoPlayInterval = setInterval(() => changePhoto(1), 3000);  // 每3秒切換一次照片
+        }
+
+        function stopAutoPlay() {
+            clearInterval(autoPlayInterval);   // 停止自動播放
+        }
+
+        // 每次手動操作後，重新啟動自動播放，並等待5分鐘
+        function resetAutoPlay() {
+            if (stopAutoPlayTimeout) clearTimeout(stopAutoPlayTimeout);  // 清除之前的計時器
+            stopAutoPlay();  // 停止自動播放
+
+            // 設置5分鐘後重新啟動自動播放
+            stopAutoPlayTimeout = setTimeout(() => {
+                isAutoPlaying = true;  // 重新設置自動播放為啟動狀態
+                startAutoPlay();  // 啟動自動播放
+            }, 300000);  // 300000毫秒 = 5分鐘
+        }
+
+        // 鍵盤操作，左右鍵切換相片
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') changePhoto(-1);  // 按左鍵切換到上一張
+            if (event.key === 'ArrowRight') changePhoto(1);  // 按右鍵切換到下一張
+        });
+
+        // 初始化頁面，顯示第一張照片，並啟動自動播放
+        showPhoto(currentIndex);
+        startAutoPlay();  // 開始自動播放
+
+        // 綁定上一張和下一張的按鈕
+        document.getElementById('prev').addEventListener('click', () => changePhoto(-1));  // 綁定上一張按鈕
+        document.getElementById('next').addEventListener('click', () => changePhoto(1));  // 綁定下一張按鈕
+    </script>
+
+</body>
+</html>
+
+
+    updateView();
+  </script>
+  
+</body>
+</html>
