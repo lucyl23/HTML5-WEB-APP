@@ -10,7 +10,6 @@
 支援鍵盤左右鍵切換
 -->
 
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -47,6 +46,7 @@
         let autoPlayInterval = null;     // 變數autoPlayInterval為自動播放的計時器
         let isAutoPlaying = true;        // 變數isAutoPlaying用於判斷是否正在自動播放
         let stopAutoPlayTimeout = null;  // 變數stopAutoPlayTimeout為停止自動播放後，等待5分鐘再重新啟動的計時器
+        // null表示變數存在，但沒有具體的值
 
         // 函數showPhoto定義為顯示指定相片photos[0]、[1]、[2]、[3]
         function showPhoto(index) {                                                          // index變數在此被宣告。函式參數本身就等於是變數宣告(作為區域性變數宣告)
@@ -55,16 +55,16 @@
         }
       
       <!--
-      純文字                             .textContent
-      插入HTML標籤                       .innerHTML
+      純文字                              .textContent
+      插入HTML標籤                        .innerHTML
       要處理顯示的文本內容且需要考慮CSS樣式  .innerText
       -->
 
         // 切換相片（上一張或下一張）
         function changePhoto(direction) {
-            currentIndex = (currentIndex + direction + photos.length) % photos.length;
+            currentIndex = (currentIndex + direction + photos.length) % photos.length;  //使用老師提供的算式替換掉條件式
             showPhoto(currentIndex); 
-            resetAutoPlay();  // 每次切換後重啟自動播放
+            resetAutoPlay();                                                            // 每次切換後重啟自動播放
         }
       
       <!--
@@ -90,13 +90,13 @@
         // 每次手動操作後，重新啟動自動播放，並等待5分鐘
         function resetAutoPlay() {
             if (stopAutoPlayTimeout) clearTimeout(stopAutoPlayTimeout);  // 清除之前的計時器
-            stopAutoPlay();  // 停止自動播放
+            stopAutoPlay();                                              // 停止自動播放
 
             // 設置5分鐘後重新啟動自動播放
             stopAutoPlayTimeout = setTimeout(() => {
-                isAutoPlaying = true;  // 重新設置自動播放為啟動狀態
-                startAutoPlay();  // 啟動自動播放
-            }, 300000);  // 300000毫秒 = 5分鐘
+                isAutoPlaying = true;                                    // 重新設置自動播放為啟動狀態
+                startAutoPlay();                                         // 啟動自動播放
+            }, 300000);    // 300000毫秒 = 5分鐘
         }
 
         // 鍵盤操作，左右鍵切換相片
