@@ -10,6 +10,7 @@
 支援鍵盤左右鍵切換
 -->
 
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -48,10 +49,16 @@
         let stopAutoPlayTimeout = null;  // 變數stopAutoPlayTimeout為停止自動播放後，等待5分鐘再重新啟動的計時器
 
         // 函數showPhoto定義為顯示指定相片photos[0]、[1]、[2]、[3]
-        function showPhoto(index) {                                                          //index變數在此被宣告。函式參數本身就等於是變數宣告(作為區域性變數宣告)
+        function showPhoto(index) {                                                          // index變數在此被宣告。函式參數本身就等於是變數宣告(作為區域性變數宣告)
             document.getElementById('photo').src = photos[index].url;                        // 設定照片來源為photos[0]裡面的url
             document.getElementById('description').textContent = photos[index].description;  // 顯示照片描述為photos[0]裡面的description
         }
+      
+      <!--
+      純文字                             .textContent
+      插入HTML標籤                       .innerHTML
+      要處理顯示的文本內容且需要考慮CSS樣式  .innerText
+      -->
 
         // 切換相片（上一張或下一張）
         function changePhoto(direction) {
@@ -62,16 +69,17 @@
       
       <!--
         為何函數changePhoto的變數是使用direction而非index?
-        命名時要問自己一個問題：「這個參數到底是 什麼意思？我傳進來是想讓函數做 什麼事？」
+        命名時要問自己一個問題：「這個參數到底是什麼意思？我傳進來是想讓函數做什麼事？」
         一個位置 → index
         一個改變的方向 → direction 在此為+1 or -1
-        一個秒數 → seconds
+        一個時間長度/秒數 → duration/seconds
         一個網址 → url
-        -->
+        要不要播放 → isPlaying（布林值）
+      -->
 
         // 自動播放（每3秒切換一次照片）
         function startAutoPlay() {
-            if (!isAutoPlaying) return;
+            if (!isAutoPlaying) return;                                  // !代表not，isAutoPlaying預設為true，如果not true(也就是false)時，return：終止當前函數執行並退出          
             autoPlayInterval = setInterval(() => changePhoto(1), 3000);  // 每3秒切換一次照片
         }
 
