@@ -25,8 +25,8 @@
 </head>
 <body>
     <div id="slideshow">
-        <img id="photo" src="" alt="照片">
-        <div id="description"></div>
+        <img id="photo" src="" alt="這是一張照片">      
+        <div id="description"></div>                   
         <div class="controls">
             <button id="prev">上一張</button>
             <button id="next">下一張</button>
@@ -42,9 +42,9 @@
             { url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREqdgOmPPAAHX0fYrBgNaAjV21EmDu91AXcQ&s', description: '這是五個月餅，中秋節快樂！' }
         ];
 
-        let currentIndex = 0;            // 變數currentIndex為當前顯示的照片索引
-        let autoPlayInterval = null;     // 變數autoPlayInterval為自動播放的計時器
-        let isAutoPlaying = true;        // 變數isAutoPlaying用於判斷是否正在自動播放
+        let currentIndex = 0;            // 變數currentIndex為當前顯示的照片索引，預設顯示為第一張
+        let autoPlayInterval = null;     // 變數autoPlayInterval為自動播放的計時器，後續會用來清除計時器
+        let isAutoPlaying = true;        // 變數isAutoPlaying用於判斷是否正在自動播放，預設為開啟(true)
         let stopAutoPlayTimeout = null;  // 變數stopAutoPlayTimeout為停止自動播放後，等待5分鐘再重新啟動的計時器
         // null表示變數存在，但沒有具體的值
 
@@ -55,9 +55,9 @@
         }
       
       <!--
-      純文字                              .textContent
-      插入HTML標籤                        .innerHTML
-      要處理顯示的文本內容且需要考慮CSS樣式  .innerText
+          純文字                              .textContent
+          插入HTML標籤                        .innerHTML
+          要處理顯示的文本內容且需要考慮CSS樣式  .innerText
       -->
 
         // 切換相片（上一張或下一張）
@@ -79,24 +79,27 @@
 
         // 自動播放（每3秒切換一次照片）
         function startAutoPlay() {
-            if (!isAutoPlaying) return;                                  // !代表not，isAutoPlaying預設為true，如果not true(也就是false)時，return：終止當前函數執行並退出          
-            autoPlayInterval = setInterval(() => changePhoto(1), 3000);  // 每3秒切換一次照片
+            if (!isAutoPlaying) return;                                  
+            // !代表not，isAutoPlaying預設為true，如果not true(也就是false)時，return：終止當前函數執行並退出。也就是說，如果正在停止撥放，就不再執行自動撥放          
+            autoPlayInterval = setInterval(() => changePhoto(1), 3000);  // 每3秒切換一次照片。changePhoto()先給一個值1使得自動撥放可以運行
         }
 
         function stopAutoPlay() {
             clearInterval(autoPlayInterval);   // 停止自動播放
         }
 
-        // 每次手動操作後，重新啟動自動播放，並等待5分鐘
+        // 每次手動操作後，重新啟動自動播放
         function resetAutoPlay() {
-            if (stopAutoPlayTimeout) clearTimeout(stopAutoPlayTimeout);  // 清除之前的計時器
+            if (stopAutoPlayTimeout) {clearTimeout(stopAutoPlayTimeout)};  // 如果有正在運行的計時器，先清除它
             stopAutoPlay();                                              // 停止自動播放
 
-            // 設置5分鐘後重新啟動自動播放
-            stopAutoPlayTimeout = setTimeout(() => {
-                isAutoPlaying = true;                                    // 重新設置自動播放為啟動狀態
-                startAutoPlay();                                         // 啟動自動播放
-            }, 300000);    // 300000毫秒 = 5分鐘
+            // 在手動操作切換後，設置5分鐘後重新啟動自動播放
+            if (isAutoPlaying) {
+                stopAutoPlayTimeout = setTimeout(() => {
+                    isAutoPlaying = true;                                    // 重新設置自動播放為啟動狀態
+                    startAutoPlay();                                         // 啟動自動播放
+                }, 300000);    // 300000毫秒 = 5分鐘
+            }
         }
 
         // 鍵盤操作，左右鍵切換相片
@@ -110,8 +113,8 @@
         startAutoPlay();  // 開始自動播放
 
         // 綁定上一張和下一張的按鈕
-        document.getElementById('prev').addEventListener('click', () => changePhoto(-1));  // 綁定上一張按鈕
-        document.getElementById('next').addEventListener('click', () => changePhoto(1));  // 綁定下一張按鈕
+        document.getElementById('prev').addEventListener('click', () => changePhoto(-1));  // 按下「上一張」按鈕，顯示上一張
+        document.getElementById('next').addEventListener('click', () => changePhoto(1));  // 按下「下一張」按鈕，顯示下一張
     </script>
 
 </body>
