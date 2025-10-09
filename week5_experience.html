@@ -1,4 +1,66 @@
 <!--
-RWD
-material design
+【RWD & material design】
+˙ RWD (Responsive Web Design) 是指「響應式網頁設計」，一種網頁設計技術，
+  讓網站能根據使用者裝置（如手機、平板、電腦）的螢幕尺寸自動調整版面和內容。 
+  它使用彈性網格和CSS的媒體查詢功能，讓網頁元素能動態適應不同解析度，確保使用者在各種裝置上都能獲得最佳的瀏覽體驗。 
+  好處：只需維護一套程式碼和網址，能提升使用者體驗和SEO效果。
+˙ material design：設計人員與開發人員共同平台
+  提供許多元件components可以使用，讓風格一致
+  風格：真實世界紋理、一致色彩(扁平化、接近紙張)
 -->
+
+<!--
+CDN版本：免下載可以直接寫在head中，在網路上使用。其中定義許多CSS，可以直接引用。
+下載到本地：網路無法使用。可避免CDN不穩定。
+每隔一段時間會有新版出來，若需要新版元件則須修改CDN網址至新版。
+-->
+
+// class：在style設定樣式(.class_name{樣式})，下方body在div呼叫class_name並包住想要改變樣式的文字
+
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>daisyUI 單一卡片主題切換</title>
+
+  <!-- ✅ 直接使用 daisyUI CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-center gap-6 p-6 bg-gray-100">
+  <button id="changeTheme" class="btn btn-primary">
+    🎨 隨機更換卡片風格
+  </button>
+
+  <!-- ✅ 在 card 外層加 data-theme 屬性 -->
+  <div id="cardContainer" data-theme="cupcake" class="card w-96 bg-base-100 shadow-xl transition-all duration-300">
+    <figure><img src="https://picsum.photos/400/200" alt="隨機圖片"></figure>   // 圖片包在figure
+    <div class="card-body">                                                    //將下方內容包在div class為card-body的裡面
+      <h2 class="card-title">daisyUI Card</h2>
+      <p>只改變卡片風格，不影響整個頁面。</p>
+      <div class="card-actions justify-end">
+        <button class="btn btn-secondary">了解更多</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const themes = [
+      "light","dark","cupcake","bumblebee","emerald","corporate",
+      "synthwave","retro","cyberpunk","valentine","halloween",
+      "garden","forest","aqua","lofi","pastel","fantasy",
+      "wireframe","black","luxury","dracula"
+    ];
+
+    document.getElementById('changeTheme').addEventListener('click', () => {                // .addEventListener(動作,執行函數)。之前是使用onclick。
+      const randomTheme = themes[Math.floor(Math.random() * themes.length)];                // 宣告變數randomTheme為陣列themes[使用Math.random亂數]
+      // ✅ 只改變卡片的 data-theme，而不是整個 html
+      document.getElementById('cardContainer').setAttribute('data-theme', randomTheme);     // .setAttribute(要換的地方,換的內容)
+      console.log("切換卡片主題:", randomTheme);                                              // console.log ?
+    });
+  </script>
+</body>
+</html>
