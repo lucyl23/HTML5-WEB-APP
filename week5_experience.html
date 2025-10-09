@@ -63,4 +63,51 @@ CDN版本：免下載可以直接寫在head中，在網路上使用。其中定�
     });
   </script>
 </body>
+
+//----------------------------將商品加入陣列並使用迴圈列出(而非一個個輸入)------------------------------------
+  
+<body class="p-6 bg-gray-100">
+
+<h1 class="text-2xl font-bold mb-4">陣列 + 迴圈 動態商品列表</h1>
+<div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>   // grid-cols-(num)
+
+<script>
+const products = [
+  { name: "商品 A", desc: "好吃又便宜", img: "https://picsum.photos/300/200?3" },
+  { name: "商品 B", desc: "人氣熱銷中", img: "https://picsum.photos/300/200?4" },
+  { name: "商品 C", desc: "限量特價",   img: "https://picsum.photos/300/200?5" },
+];
+
+const container = document.getElementById("productList");
+for(let i=0; i<products.length; i++){                          // for迴圈(A;B;C){執行內容X}
+  const p = products[i]; 
+  container.innerHTML += `                                     
+    <div class="card bg-base-100 shadow-xl">
+      <figure><img src="${p.img}" alt="${p.name}"></figure>    
+      <div class="card-body">
+        <h2 class="card-title">${p.name}</h2>
+        <p>${p.desc}</p>
+        <div class="card-actions justify-end">
+          <button class="btn btn-primary">加入購物車</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+</script>
+</body>
+  
 </html>
+
+<!--
+反單引號(範圍內皆須執行)、+=
+${}先視為變數
+-->
+
+
+<!--
+作業：【grid-cols-(num)】
+後面的數字num就是在不同設備上(depends螢幕寬度)顯示多少個區塊
+num = 3 顯示3個區塊
+裝置大小：sm小型(small)、lg大型(large)  待查
+-->
