@@ -16,8 +16,25 @@ CDN版本：免下載可以直接寫在head中，在網路上使用。其中定�
 每隔一段時間會有新版出來，若需要新版元件則須修改CDN網址至新版。
 -->
 
-// class：在style設定樣式(.class_name{樣式})，下方body在div呼叫class_name並包住想要改變樣式的文字
-
+<!--
+class：在style設定樣式(.class_name{樣式})，下方body在div呼叫class_name並包住想要改變樣式的文字。class內可以有很多個屬性。
++---------------------------+
+|         margin            |
+|  +---------------------+  |
+|  |      border         |  |
+|  |  +---------------+  |  |
+|  |  |   padding     |  |  |
+|  |  | +-----------+ |  |  |
+|  |  | |  content  | |  |  |
+|  |  | +-----------+ |  |  |
+|  |  +---------------+  |  |
+|  +---------------------+  |
++---------------------------+
+1. Content（內容）：實際內容，如文字、圖片。
+2. Padding（內邊距）：內容與邊框（border）之間的空間。增加 padding 會讓內容看起來有更多的「內部空間」。padding 的背景色會延伸到該區域。
+3. Border（邊框）：包住 padding 和內容的「邊線」。可以設置粗細、樣式（實線、虛線等）、顏色。
+4. Margin（外邊距）：元素與其他元素之間的距離。不會有背景色，也不會顯示邊框。主要用來控制元素間的空隙。
+-->
 
 <!DOCTYPE html>
 <html lang="zh-Hant">
@@ -28,7 +45,7 @@ CDN版本：免下載可以直接寫在head中，在網路上使用。其中定�
 
   <!-- ✅ 直接使用 daisyUI CDN -->
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"></script>                  // 引入Tailwind CSS可使用grid
 </head>
 
 <body class="min-h-screen flex flex-col items-center justify-center gap-6 p-6 bg-gray-100">
@@ -56,11 +73,11 @@ CDN版本：免下載可以直接寫在head中，在網路上使用。其中定�
       "wireframe","black","luxury","dracula"
     ];
 
-    document.getElementById('changeTheme').addEventListener('click', () => {                // .addEventListener(動作,執行函數)。之前是使用onclick。
+    document.getElementById('changeTheme').addEventListener('click', () => {                // .addEventListener(動作,執行函數) 新增監聽事件者。等同於之前使用onclick。
       const randomTheme = themes[Math.floor(Math.random() * themes.length)];                // 宣告變數randomTheme為陣列themes[使用Math.random亂數]
       // ✅ 只改變卡片的 data-theme，而不是整個 html
       document.getElementById('cardContainer').setAttribute('data-theme', randomTheme);     // .setAttribute(要換的地方,換的內容)
-      console.log("切換卡片主題:", randomTheme);                                              // console.log ?
+      console.log("切換卡片主題:", randomTheme);                                              // console.log(要輸出的內容)：除錯工具（debug tool），用來在瀏覽器的主控台（Console）輸出訊息。
     });
   </script>
 </body>
@@ -74,12 +91,12 @@ CDN版本：免下載可以直接寫在head中，在網路上使用。其中定�
 <script>
 const products = [
   { name: "商品 A", desc: "好吃又便宜", img: "https://picsum.photos/300/200?6", sale: false },
-  { name: "商品 B", desc: "人氣熱銷中", img: "https://picsum.photos/300/200?7", sale: true },
+  { name: "商品 B", desc: "人氣熱銷中", img: "https://picsum.photos/300/200?7", sale: true },   // 布林值，只有true和false兩種可能 
   { name: "商品 C", desc: "限量特價",   img: "https://picsum.photos/300/200?8", sale: false },
 ];
 
 const container = document.getElementById("productList");
-for(let i=0; i<products.length; i++){                                                          // for迴圈(A;B;C){執行內容X}
+for(let i=0; i<products.length; i++){                                                          // for迴圈(A;B;C){執行內容X}。使用迴圈讓各資訊自動填入對應位置
   const p = products[i];
   // ✅ 如果是特價商品就多顯示一個紅色標籤
   const badge = p.sale ? `<div class="badge badge-error">特價中</div>` : "";
@@ -99,21 +116,49 @@ for(let i=0; i<products.length; i++){                                           
 </script>
 
 </body>
-
-
-
-
 </html>
 
 <!--
-反單引號(範圍內皆須執行)、+=
+for(   ;   ;   )
+let i=0           設定初始值
+i<product.length  確認是否符合條件(陣列長度)。符合執行；不符合退出
+i++ (i=i+1)       執行一次for迴圈後會執行該動作
+
+i++    i=i+1
+i+=A   i=i+A
+-->
+
+<!--
+container.innerHTML += ‵ ‵反單引號(範圍內皆須執行，Tab上方)，等於每執行一次for迴圈，就會執行i=i+A，A的內容為反單影引號內內容
+‵ ‵取代單引號一行一行括起來
 ${}先視為變數
+-->
+
+<!--
+const badge = p.sale ? `<div class="badge badge-error">特價中</div>` : "";
+可以視為
+if (p.sale)   這邊因為布林值只有true和false，就不用多寫==true。問號?等於if
+  badge = `<div class="badge badge-error">特價中</div>`;
+else          冒號:等於else
+  badge = "";
 -->
 
 
 <!--
 作業：【grid-cols-(num)】
 後面的數字num就是在不同設備上(depends螢幕寬度)顯示多少個區塊
-num = 3 顯示3個區塊
-裝置大小：sm小型(small)、lg大型(large)  待查
+num = 3 顯示3個區塊，num可以從1~6
+數字等為Tailwind預設，需於head區引入。
+class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+grid	           啟用 CSS Grid Layout，讓元素變成格狀排版。
+grid-cols-1	     預設情況下，網格有 1 欄。
+sm:grid-cols-2	 當螢幕寬度為 sm（640px）以上時，使用 2 欄。
+lg:grid-cols-3   當螢幕寬度為 lg（1024px）以上時，使用 3 欄。
+gap-6	           欄與欄、列與列之間有 1.5rem 的間距（Tailwind 中 6 = 1.5rem）。
+斷點名稱 | 最小寬度 | 說明        
+sm      | 640px   | 小螢幕手機或平板
+md      | 768px   | 中等裝置，平板或小桌機
+lg      | 1024px  | 一般桌機
+xl      | 1280px  | 大桌機
+2xl     | 1536px  | 超大螢幕
 -->
