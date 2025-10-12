@@ -1,3 +1,4 @@
+//20251009
 <!--
 【RWD & material design】
 ˙ RWD (Responsive Web Design) 是指「響應式網頁設計」，一種網頁設計技術，
@@ -64,28 +65,29 @@ CDN版本：免下載可以直接寫在head中，在網路上使用。其中定�
   </script>
 </body>
 
-//----------------------------將商品加入陣列並使用迴圈列出(而非一個個輸入)------------------------------------
-  
-<body class="p-6 bg-gray-100">
+//----------------------------將商品加入陣列並使用迴圈列出(而非一個個輸入)&加入特價標示------------------------------------
 
-<h1 class="text-2xl font-bold mb-4">陣列 + 迴圈 動態商品列表</h1>
-<div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>   // grid-cols-(num)
+<body class="p-6 bg-gray-100">
+<h1 class="text-2xl font-bold mb-4">特價商品標示</h1>
+<div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>      // grid-cols-(num)
 
 <script>
 const products = [
-  { name: "商品 A", desc: "好吃又便宜", img: "https://picsum.photos/300/200?3" },
-  { name: "商品 B", desc: "人氣熱銷中", img: "https://picsum.photos/300/200?4" },
-  { name: "商品 C", desc: "限量特價",   img: "https://picsum.photos/300/200?5" },
+  { name: "商品 A", desc: "好吃又便宜", img: "https://picsum.photos/300/200?6", sale: false },
+  { name: "商品 B", desc: "人氣熱銷中", img: "https://picsum.photos/300/200?7", sale: true },
+  { name: "商品 C", desc: "限量特價",   img: "https://picsum.photos/300/200?8", sale: false },
 ];
 
 const container = document.getElementById("productList");
-for(let i=0; i<products.length; i++){                          // for迴圈(A;B;C){執行內容X}
-  const p = products[i]; 
-  container.innerHTML += `                                     
-    <div class="card bg-base-100 shadow-xl">
-      <figure><img src="${p.img}" alt="${p.name}"></figure>    
+for(let i=0; i<products.length; i++){                                                          // for迴圈(A;B;C){執行內容X}
+  const p = products[i];
+  // ✅ 如果是特價商品就多顯示一個紅色標籤
+  const badge = p.sale ? `<div class="badge badge-error">特價中</div>` : "";
+  container.innerHTML += `
+    <div class="card bg-base-100 shadow-xl relative">
+      <figure><img src="${p.img}" alt="${p.name}"></figure>
       <div class="card-body">
-        <h2 class="card-title">${p.name}</h2>
+        <h2 class="card-title">${p.name} ${badge}</h2>
         <p>${p.desc}</p>
         <div class="card-actions justify-end">
           <button class="btn btn-primary">加入購物車</button>
@@ -95,8 +97,12 @@ for(let i=0; i<products.length; i++){                          // for迴圈(A;B;
   `;
 }
 </script>
+
 </body>
-  
+
+
+
+
 </html>
 
 <!--
