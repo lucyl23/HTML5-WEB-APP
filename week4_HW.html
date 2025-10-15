@@ -11,6 +11,7 @@
 -->
 
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -33,90 +34,101 @@
         </div>
     </div>
 
-    <script>
-             // 宣告陣列photos，包含圖片來源與描述
-        const photos = [
-            { url: 'https://cdn.pixabay.com/photo/2020/07/23/14/48/cat-5431546_640.jpg', description: '這是一隻貓' },
-            { url: 'https://cdn.pixabay.com/photo/2020/03/31/19/19/dog-4988984_640.jpg', description: '這是一隻狗' },
-            { url: 'https://cdn.pixabay.com/photo/2015/07/30/12/28/swan-867601_640.jpg', description: '這是兩隻鵝' },
-            { url: 'https://cdn.pixabay.com/photo/2023/10/13/15/26/tea-ceremony-8312991_640.jpg', description: '中秋節快樂！' }
-        ];
 
-        let currentIndex = 0;            // 變數currentIndex為當前顯示的照片索引，預設顯示為第一張
-        let autoPlayInterval = null;     // 變數autoPlayInterval為自動播放的計時器，後續會用來清除計時器
-        let isAutoPlaying = true;        // 變數isAutoPlaying用於判斷是否正在自動播放，預設為開啟(true)
-        let stopAutoPlayTimeout = null;  // 變數stopAutoPlayTimeout為停止自動播放後，等待5分鐘再重新啟動的計時器
-        // null表示變數存在，但沒有具體的值
+<script>
+         // 宣告陣列photos，包含圖片來源與描述
+    const photos = [
+        { url: 'https://cdn.pixabay.com/photo/2020/07/23/14/48/cat-5431546_640.jpg', description: '這是一隻貓' },
+        { url: 'https://cdn.pixabay.com/photo/2020/03/31/19/19/dog-4988984_640.jpg', description: '這是一隻狗' },
+        { url: 'https://cdn.pixabay.com/photo/2015/07/30/12/28/swan-867601_640.jpg', description: '這是兩隻鵝' },
+        { url: 'https://cdn.pixabay.com/photo/2023/10/13/15/26/tea-ceremony-8312991_640.jpg', description: '中秋節快樂！' }
+    ];
 
-        // 函數showPhoto定義為顯示指定相片photos[0]、[1]、[2]、[3]
-        function showPhoto(index) {                                                          // index變數在此被宣告。函式參數本身就等於是變數宣告(作為區域性變數宣告)
-            document.getElementById('photo').src = photos[index].url;                        // 設定照片來源為photos[0]裡面的url
-            document.getElementById('description').textContent = photos[index].description;  // 顯示照片描述為photos[0]裡面的description
-        }
-      
-      <!--
-          純文字                              .textContent
-          插入HTML標籤                        .innerHTML
-          要處理顯示的文本內容且需要考慮CSS樣式  .innerText
-      -->
+    let currentIndex = 0;            // 變數currentIndex為當前顯示的照片索引，預設顯示為第一張
+    let autoPlayInterval = null;     // 變數autoPlayInterval為自動播放的計時器，後續會用來清除計時器
+    let isAutoPlaying = true;        // 變數isAutoPlaying用於判斷是否正在自動播放，預設為開啟(true)
+    let stopAutoPlayTimeout = null;  // 變數stopAutoPlayTimeout為停止自動播放後，等待5分鐘再重新啟動的計時器
+    // null表示變數存在，但沒有具體的值
 
-        // 切換相片（上一張或下一張）
-        function changePhoto(direction) {
-            currentIndex = (currentIndex + direction + photos.length) % photos.length;  //使用老師提供的算式替換掉條件式
-            showPhoto(currentIndex); 
-            resetAutoPlay();                                                            // 每次切換後重啟自動播放
-        }
-      
-      <!--
-        為何函數changePhoto的變數是使用direction而非index?
-        命名時要問自己一個問題：「這個參數到底是什麼意思？我傳進來是想讓函數做什麼事？」
-        一個位置 → index
-        一個改變的方向 → direction 在此為+1 or -1
-        一個時間長度/秒數 → duration/seconds
-        一個網址 → url
-        要不要播放 → isPlaying（布林值）
-      -->
+    // 函數showPhoto定義為顯示指定相片photos[0]、[1]、[2]、[3]
+    function showPhoto(index) {                                                          // index變數在此被宣告。函式參數本身就等於是變數宣告(作為區域性變數宣告)
+        document.getElementById('photo').src = photos[index].url;                        // 設定照片來源為photos[0]裡面的url
+        document.getElementById('description').textContent = photos[index].description;  // 顯示照片描述為photos[0]裡面的description
+    }
+  
 
-        // 自動播放（每3秒切換一次照片）
-        function startAutoPlay() {
-            if (!isAutoPlaying) return;                                  
-            // !代表not，isAutoPlaying預設為true，如果not true(也就是false)時，return：終止當前函數執行並退出。也就是說，如果正在停止撥放，就不再執行自動撥放          
-            autoPlayInterval = setInterval(() => changePhoto(1), 3000);  // 每3秒切換一次照片。changePhoto()先給一個值1使得自動撥放可以運行
-        }
-
-        function stopAutoPlay() {
-            clearInterval(autoPlayInterval);   // 停止自動播放
-        }
-
-        // 每次手動操作後，重新啟動自動播放
-        function resetAutoPlay() {
-            if (stopAutoPlayTimeout) {clearTimeout(stopAutoPlayTimeout)};  // 如果有正在運行的計時器，先清除它
-            stopAutoPlay();                                              // 停止自動播放
-
-            // 在手動操作切換後，設置5分鐘後重新啟動自動播放
-            if (isAutoPlaying) {
-                stopAutoPlayTimeout = setTimeout(() => {
-                    isAutoPlaying = true;                                    // 重新設置自動播放為啟動狀態
-                    startAutoPlay();                                         // 啟動自動播放
-                }, 300000);    // 300000毫秒 = 5分鐘
-            }
-        }
-
-        // 鍵盤操作，左右鍵切換相片
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'ArrowLeft') changePhoto(-1);  // 按左鍵切換到上一張
-            if (event.key === 'ArrowRight') changePhoto(1);  // 按右鍵切換到下一張
-        });
-
-        // 初始化頁面，顯示第一張照片，並啟動自動播放
+    // 切換相片（上一張或下一張）
+    function changePhoto(direction, isManual = false) {
+        currentIndex = (currentIndex + direction + photos.length) % photos.length;
         showPhoto(currentIndex);
-        startAutoPlay();  // 開始自動播放
 
-        // 綁定上一張和下一張的按鈕
-        document.getElementById('prev').addEventListener('click', () => changePhoto(-1));  // 按下「上一張」按鈕，顯示上一張
-        document.getElementById('next').addEventListener('click', () => changePhoto(1));  // 按下「下一張」按鈕，顯示下一張
-    </script>
+        if (isManual) resetAutoPlay();  // 只有「手動操作」時才重置自動播放
+    }
+
+
+    // 自動播放（每3秒切換一次照片）
+    function startAutoPlay() {
+        if (!isAutoPlaying) return;                                  
+        // !代表not，isAutoPlaying預設為true，如果not true(也就是false)時，return：終止當前函數執行並退出。也就是說，如果正在停止撥放，就不再執行自動撥放          
+        autoPlayInterval = setInterval(() => changePhoto(1), 3000);  // 每3秒切換一次照片。changePhoto()先給一個值1使得自動撥放可以運行
+    }
+
+    function stopAutoPlay() {
+        clearInterval(autoPlayInterval);   // 停止自動播放
+    }
+
+    // 每次手動操作後，重新啟動自動播放
+    function resetAutoPlay() {
+        if (stopAutoPlayTimeout) {clearTimeout(stopAutoPlayTimeout)};  // 如果有正在運行的計時器，先清除它
+        stopAutoPlay();                                              // 停止自動播放
+
+        // 在手動操作切換後，設置5分鐘後重新啟動自動播放
+        if (isAutoPlaying) {
+            stopAutoPlayTimeout = setTimeout(() => {
+                isAutoPlaying = true;                                    // 重新設置自動播放為啟動狀態
+                startAutoPlay();                                         // 啟動自動播放
+            }, 300000);    // 300000毫秒 = 5分鐘
+        }
+    }
+
+    // 鍵盤操作，左右鍵切換相片
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') changePhoto(-1,true);  // 按左鍵切換到上一張，回傳true代表為手動撥放
+        if (event.key === 'ArrowRight') changePhoto(1,true);  // 按右鍵切換到下一張，回傳true代表為手動撥放
+    });
+
+    // 初始化頁面，顯示第一張照片，並啟動自動播放
+    showPhoto(currentIndex);
+    startAutoPlay();  // 開始自動播放
+
+    // 綁定上一張和下一張的按鈕
+    document.getElementById('prev').addEventListener('click', () => changePhoto(-1,true));  // 按下「上一張」按鈕，顯示上一張，回傳true代表為手動撥放
+    document.getElementById('next').addEventListener('click', () => changePhoto(1,true));  // 按下「下一張」按鈕，顯示下一張，回傳true代表為手動撥放
+</script>
 
 </body>
 </html>
 
+
+<!--
+    純文字                              .textContent
+    插入HTML標籤                        .innerHTML
+    要處理顯示的文本內容且需要考慮CSS樣式  .innerText
+-->
+
+<!--
+    為何函數changePhoto的變數是使用direction而非index?
+    命名時要問自己一個問題：「這個參數到底是什麼意思？我傳進來是想讓函數做什麼事？」
+    一個位置 → index
+    一個改變的方向 → direction 在此為+1 or -1
+    一個時間長度/秒數 → duration/seconds
+    一個網址 → url
+    要不要播放 → isPlaying（布林值）
+-->
+
+<!--
+    在JavaScript中不能像現在這樣下註解，要使用//下註解！！
+    不然程式會沒辦法跑！！！
+    難怪我每次寫完註解再丟到JS Bin就不能跑了
+    JS Bin連結：https://jsbin.com/qamuluv/edit?html,output
+-->
