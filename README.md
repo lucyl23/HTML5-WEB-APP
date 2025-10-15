@@ -10,4 +10,4 @@
 
 week1是2025/09/11
 
-week4上課學習心得已更新於main branch（20251007）
+week4的作業已經加入JS Bin連結！！https://jsbin.com/qamuluv/edit?html,output
