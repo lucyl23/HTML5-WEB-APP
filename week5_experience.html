@@ -132,6 +132,22 @@ i+=A   i=i+A
 container.innerHTML += ‵ ‵反單引號(範圍內皆須執行，Tab上方)，等於每執行一次for迴圈，就會執行i=i+A，A的內容為反單影引號內內容
 ‵ ‵取代單引號一行一行括起來
 ${}先視為變數
+如果不使用反單引號的話，可參考以下例子：
+  // 組合 HTML
+  var cardHtml = ''
+    + '<div class="card bg-base-100 shadow-xl relative">'
+    + '  <figure><img src="' + p.img + '" alt="' + p.name + '"></figure>'
+    + '  <div class="card-body">'
+    + '    <h2 class="card-title">' + p.name + ' ' + badge + '</h2>'
+    + '    <p>' + p.desc + '</p>'
+    + '    <div class="card-actions justify-end">'
+    + '      <button class="btn btn-primary">加入購物車</button>'
+    + '    </div>'
+    + '  </div>'
+    + '</div>';
+
+  // 加入頁面
+  container.innerHTML += cardHtml;
 -->
 
 <!--
