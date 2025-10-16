@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品列表 - 按鈕事件</title>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-6 bg-gray-100">
 
+<h1 class="text-2xl font-bold mb-4">按下按鈕顯示商品名稱</h1>
+<div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+<script>
+// 商品資料
+const products = [
+  { name: "商品 A", desc: "好吃又便宜", img: "https://picsum.photos/300/200?9" },
+  { name: "商品 B", desc: "人氣熱銷中", img: "https://picsum.photos/300/200?10" },
+  { name: "商品 C", desc: "限量特價",   img: "https://picsum.photos/300/200?11" }
+];
+
+// 找到容器
+const container = document.getElementById("productList");
+
+// 用傳統 for 迴圈
+for (let i = 0; i < products.length; i++) {
+  const p = products[i];
+
+  // 建立卡片元素
+  const card = document.createElement("div");       // ***
+  card.className = "card bg-base-100 shadow-xl";
+
+  // 用傳統字串串接方式（避免初學者混淆模板字串與 jQuery）
+  card.innerHTML =
+    '<figure><img src="' + p.img + '" alt="' + p.name + '"></figure>' +
+    '<div class="card-body">' +
+      '<h2 class="card-title">' + p.name + '</h2>' +
+      '<p>' + p.desc + '</p>' +
+      '<div class="card-actions justify-end">' +
+        '<button class="btn btn-primary">加入購物車</button>' +        // ***
+      '</div>' +
+    '</div>';
+
+  // 綁定事件：點擊按鈕會 alert 出商品名稱
+  const btn = card.querySelector("button");            // ***
+  btn.addEventListener("click", function() {
+    alert("已選擇：" + p.name);
+  });
+
+  // 加入畫面到div id="productList"
+  container.appendChild(card);   // appendChild
+}
+</script>
+
+</body>
+</html>
