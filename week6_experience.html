@@ -27,9 +27,10 @@ const container = document.getElementById("productList");
 for (let i = 0; i < products.length; i++) {
   const p = products[i];
 
-  // 建立卡片元素
-  const card = document.createElement("div");       // ***
-  card.className = "card bg-base-100 shadow-xl";
+  // 建立卡片元素：這邊等同於版本3的card.innerHTML第一行
+  const card = document.createElement("div");       // 在JavaScript中建立一個新的<div>元素，並把它存進名為card的變數裡。<div>也可變為其他元素種類<p>、<img>...
+  card.className = "card bg-base-100 shadow-xl";    // <div class="card bg-base-100 shadow-xl"> 等同於設定變數card裡的<div>元素的class屬性
+  // 另一種寫法：card.classList.add("card", "bg-base-100", "shadow-xl");  分別新增class
 
   // 用傳統字串串接方式（避免初學者混淆模板字串與 jQuery）
   card.innerHTML =
