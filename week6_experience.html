@@ -39,18 +39,21 @@ for (let i = 0; i < products.length; i++) {
       '<h2 class="card-title">' + p.name + '</h2>' +
       '<p>' + p.desc + '</p>' +
       '<div class="card-actions justify-end">' +
-        '<button class="btn btn-primary">加入購物車</button>' +        // ***
+        '<button class="btn btn-primary">加入購物車</button>' +        // 寫在迴圈內，每次新增一張卡片時同時生成button按鈕
       '</div>' +
     '</div>';
 
   // 綁定事件：點擊按鈕會 alert 出商品名稱
-  const btn = card.querySelector("button");            // ***
+  const btn = card.querySelector("button");            // 在card裡面找出第一個<button>元素，並把它存進變數btn裡。
   btn.addEventListener("click", function() {
-    alert("已選擇：" + p.name);
+    alert("已選擇：" + p.name);                        // 變數不同(p.name)，出現結果不同(商品A、商品B、商品C)
   });
+  // querySelector()只會回傳第一個符合條件的元素。如果有很多要找的，則用querySelectorAll()。
 
   // 加入畫面到div id="productList"
-  container.appendChild(card);   // appendChild
+  container.appendChild(card);   // appendChild增加子層到div id="productList"
+  // 有變數card就使用card。若是使用+=(innerHTML)，btn綁定事件就不包含在裡面 >> 版本4邏輯：先綁定事件後塞入，只須執行一次迴圈
+  // 全數執行完畢後，原本空空的div grid，因為跑了三次迴圈，所以會有三張卡片的內容
 }
 </script>
 
