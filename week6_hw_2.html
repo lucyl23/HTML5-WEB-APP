@@ -1,2 +1,105 @@
+
+// -------------------------搜尋欄輸入金額即可篩選-----------------------------------
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>商品列表 - 搜尋價格功能</title> 
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" /> 
+<script src="https://cdn.tailwindcss.com"></script> 
+</head>
+<body class="p-6 bg-gray-100"> 
+
+<h1 class="text-2xl font-bold mb-4">搜尋商品（價格篩選）</h1> 
+<input id="searchInput" type="number" placeholder="輸入價格上限，例如 20" class="input input-bordered w-full max-w-xs mb-4" /> 
+  // 搜尋框，type=number 只允許數字輸入 
+
+<div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div> // 商品列表容器，用 Grid 排版
+
+<script>
+
+const products = [
+  { name: "紅茶", desc: "香醇好喝", price: 20, img: "https://picsum.photos/300/200?31" },
+  { name: "綠茶", desc: "清爽解渴", price: 18, img: "https://picsum.photos/300/200?32" },
+  { name: "奶茶", desc: "香濃甜美", price: 25, img: "https://picsum.photos/300/200?33" }
+]; 
+// products 是一個陣列，裡面放多個商品物件，每個物件有 name/desc/price/img
+
+// 取得 DOM 元素
+const container = document.getElementById("productList"); // 商品列表的容器
+const searchInput = document.getElementById("searchInput"); // 搜尋輸入框
+
+// ========================== render 函式 ==========================
+// render 函式的作用：把傳入的商品陣列 list 顯示在畫面上
+function render(list){
+  container.innerHTML = ""; // 先清空容器內容，避免重複疊加
+
+  for(let i = 0; i < list.length; i++){ // 用for迴圈遍歷商品陣列
+    const p = list[i]; // 取得第i個商品物件，方便後面使用
+
+    // 建立一個新的div元素，作為商品卡片
+    const card = document.createElement("div"); 
+    card.className = "card bg-base-100 shadow-xl"; // 設定class，使用DaisyUI卡片樣式
+
+    // 建立每張卡片內容
+    card.innerHTML =
+      '<figure><img src="' + p.img + '" alt="' + p.name + '"></figure>' + 
+      '<div class="card-body">' +
+        '<h2 class="card-title">' + p.name + '</h2>' + 
+        '<p>' + p.desc + '</p>' + 
+        '<p class="text-red-500 font-bold">價格：' + p.price + ' 元</p>' + 
+        '<div class="card-actions justify-end">' +
+          '<button class="btn btn-primary">加入購物車</button>' + 
+        '</div>' +
+      '</div>';
+
+    container.appendChild(card); // 把這個卡片加入 container 裡面，顯示在畫面上
+  }
+}
+
+render(products); // 頁面剛載入時先把全部商品顯示出來
+
+searchInput.addEventListener("keyup", function(){ // 當使用者在輸入框放開鍵盤按鍵時觸發
+  const inputValue = searchInput.value.trim(); // 取得輸入框文字並去除前後空白
+  const maxPrice = Number(inputValue); // 將文字轉成數字，方便比較大小
+
+  // 如果輸入空白或不是數字，就顯示全部商品
+  if (isNaN(maxPrice) || inputValue === "") { 
+    render(products);
+    return; // 結束函式，不往下執行
+  }
+
+  // 建立空陣列，存放篩選後的商品
+  const filtered = [];
+
+  for(let i = 0; i < products.length; i++){ // 遍歷每個商品，使用for迴圈<->forEach
+    const p = products[i]; // 取得單一商品
+    if (p.price < maxPrice){ // 如果商品價格小於輸入數字
+      filtered.push(p); // 加入篩選結果陣列
+    }
+  }
+
+  render(filtered); // 將篩選後的商品顯示在畫面上
+});
+</script>
+
+</body>
+</html>
+
 <!--
+DOM = Document Object Model（文件物件模型）
+瀏覽器把網頁HTML轉換成一棵「樹狀結構」的資料。
+每一個HTML標籤都變成一個「節點（Node）」，可以被JavaScript操作。
+操作     | 對應程式碼                                | 說明                
+取得元素 | `document.getElementById("productList")` | 找到特定 id 的元素       
+改變內容 | `container.innerHTML = "Hello"`          | 改變裡面的 HTML 文字     
+建立元素 | `document.createElement("div")`          | 產生一個新的 `<div>` 節點 
+加到頁面 | `container.appendChild(card)`            | 把剛建立的節點放進父元素裡     
+加事件   | `button.addEventListener("click", fn)`   | 點擊按鈕時執行函式         
+
 -->
+
+
+// JS Bin link: https://jsbin.com/pafawec/edit?html,output
+
