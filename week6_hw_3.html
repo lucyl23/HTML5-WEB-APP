@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品列表 - Range Slider 篩選價格</title>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-6 bg-gray-100">
+
+<h1 class="text-2xl font-bold mb-4">篩選商品（價格 Slider）</h1>
+
+<!-- 顯示目前選擇的價格 -->
+<p>最高價格：<span id="priceDisplay">25</span> 元</p>
+
+<!-- DaisyUI range slider -->
+<input id="priceSlider" type="range" min="0" max="25" value="25" class="range range-primary w-full max-w-xs mb-4" />
+  <!--
+  type="range" 為Range Slider
+  value為初始滑桿位置
+  class="range range-primary" 為DaisyUI樣式
+  -->
+
+<div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+<script>
+  
+const products = [
+  { name: "紅茶", desc: "香醇好喝", price: 20, img: "https://picsum.photos/300/200?31" },
+  { name: "綠茶", desc: "清爽解渴", price: 18, img: "https://picsum.photos/300/200?32" },
+  { name: "奶茶", desc: "香濃甜美", price: 25, img: "https://picsum.photos/300/200?33" }
+];
+
+const container = document.getElementById("productList"); // 商品列表容器
+const priceSlider = document.getElementById("priceSlider"); // Range Slider 元素
+const priceDisplay = document.getElementById("priceDisplay"); // 顯示目前選擇價格的 span
+
+
+function render(list){
+  container.innerHTML = ""; // 清空畫面
+  for(let i = 0; i < list.length; i++){
+    const p = list[i];
+    const card = document.createElement("div");
+    card.className = "card bg-base-100 shadow-xl";
+
+    // 建立每張卡片內容
+    card.innerHTML =
+      '<figure><img src="' + p.img + '" alt="' + p.name + '"></figure>' +
+      '<div class="card-body">' +
+        '<h2 class="card-title">' + p.name + '</h2>' +
+        '<p>' + p.desc + '</p>' +
+        '<p class="text-red-500 font-bold">價格：' + p.price + ' 元</p>' +
+        '<div class="card-actions justify-end">' +
+          '<button class="btn btn-primary">加入購物車</button>' +
+        '</div>' +
+      '</div>';
+
+    container.appendChild(card);
+  }
+}
+
+// 初始顯示全部
+render(products);
+
+priceSlider.addEventListener("input", function(){ // 'input' 事件會隨著滑鼠或手指滑動即時觸發
+  const maxPrice = Number(priceSlider.value); // 取得滑桿目前數值
+  priceDisplay.textContent = maxPrice; // 每次滑動時，更新<span>裡的文字，讓使用者看到目前上限價格。
+
+  
+  // 篩選價格低於等於滑桿數值的商品
+  const filtered = [];
+  for(let i = 0; i < products.length; i++){
+    const p = products[i];
+    if(p.price <= maxPrice){
+      filtered.push(p);
+    }  // 使用者會希望滑桿顯示「最高價格」的概念，包含等於的商品也要顯示。
+  }
+
+  render(filtered); // 顯示篩選後的商品
+});
+</script>
+
+</body>
+</html>
+
+<!--
+事件用input：
+˙ keyup是針對鍵盤輸入
+˙ input則是滑動滑桿即時觸發，非常適合篩選slider
+-->
