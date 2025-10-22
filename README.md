@@ -10,4 +10,5 @@
 
 week1是2025/09/11
 
-week4的作業已經加入JS Bin連結！！https://jsbin.com/qamuluv/edit?html,output
+week4作業JS Bin連結: https://jsbin.com/qamuluv/edit?html,output
+week6作業1的JS Bin連結: https://jsbin.com/saferil/edit?html,output
