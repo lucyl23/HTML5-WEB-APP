@@ -60,59 +60,72 @@ for (let i = 0; i < products.length; i++) {
 </body>
 
 //-----------------------------------篩選小於25元的版本------------------------------------------
-  
+
 <body class="p-6 bg-gray-100">
 
-<h1 class="text-2xl font-bold mb-4">搜尋商品</h1>
-<input id="searchInput" type="text" placeholder="輸入關鍵字..." class="input input-bordered w-full max-w-xs mb-4" />
+<h1 class="text-2xl font-bold mb-4">篩選商品（價格小於 25 元）</h1>
+<button id="filterBtn" class="btn btn-secondary mb-4">顯示價格 < 25 元商品</button>
 
 <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
 <script>
+// === 商品資料 ===
 const products = [
-  { name: "紅茶", desc: "香醇好喝", price: 20, img: "https://picsum.photos/300/200?31" },
-  { name: "綠茶", desc: "清爽解渴", price: 18, img: "https://picsum.photos/300/200?32" },
-  { name: "奶茶", desc: "香濃甜美", price: 25, img: "https://picsum.photos/300/200?33" },
+  { name: "商品 A", price: 20, desc: "平價好物", img: "https://picsum.photos/300/200?21" },
+  { name: "商品 B", price: 30, desc: "人氣熱銷", img: "https://picsum.photos/300/200?22" },
+  { name: "商品 C", price: 15, desc: "超值特惠", img: "https://picsum.photos/300/200?23" }
 ];
 
+// === 找到畫面上的容器 ===
 const container = document.getElementById("productList");
-const searchInput = document.getElementById("searchInput");
+const filterBtn = document.getElementById("filterBtn");
 
-function render(list){
-  container.innerHTML = "";                                     //清空container的內容，也就是id=productList的內容
-  for(let i=0;i<list.length;i++){
-    const p = list[i];
-    container.innerHTML += `
-      <div class="card bg-base-100 shadow-xl">
-        <figure><img src="${p.img}" alt="${p.name}"></figure>
-        <div class="card-body">
-          <h2 class="card-title">${p.name}</h2>
-          <p>${p.desc}</p>
-          <p class="text-red-500 font-bold">價格：${p.price} 元</p>
-        </div>
-      </div>
-    `;
+// === 顯示商品清單的函式 ===
+function render(list) {                           // 定義render為函數，參數為list
+  container.innerHTML = "";                       // 每次先清空原有內容(清空container的內容，也就是id=productList的內容)
+
+  // 用 for 迴圈逐一加入
+  for (let i = 0; i < list.length; i++) {
+    const p = list[i];                            // 取出當前第i個商品，暫存在變數p裡。保持流暢性，函數的參數改變時也會跟著改變。呼叫products這裡就會變products
+
+    // 建立每張卡片的格式模板
+    const card =
+      '<div class="card bg-base-100 shadow-xl">' +
+        '<figure><img src="' + p.img + '" alt="' + p.name + '"></figure>' +
+        '<div class="card-body">' +
+          '<h2 class="card-title">' + p.name + '</h2>' +
+          '<p>' + p.desc + '</p>' +
+          '<p class="text-red-500 font-bold">價格：' + p.price + ' 元</p>' +
+          '<div class="card-actions justify-end">' +
+            '<button class="btn btn-primary">加入購物車</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    // 加入到畫面中，因為無綁定事件所以使用+=
+    container.innerHTML += card;
   }
 }
 
-// 初始顯示全部
-render(products);
+// === 初始顯示所有商品 ===
+render(products);                                      // render呼叫第一次，參數為products陣列                 
 
-// ✅ keyup 即時篩選
-searchInput.addEventListener("keyup", function(){
-  const keyword = searchInput.value.trim().toLowerCase();
-  const filtered = [];
-  for(let i=0;i<products.length;i++){
-    const p = products[i];
-    // 名稱或描述包含輸入文字
-    if(p.name.toLowerCase().includes(keyword) || p.desc.toLowerCase().includes(keyword)){
-      filtered.push(p);
+// === 綁定篩選事件 ===
+filterBtn.addEventListener("click", function() {
+  const filtered = [];                                 // 宣告變數filtered為陣列
+
+  // 用for迴圈挑出價格<25的商品，塞到陣列中(.push ~ 前序/中序/後序表示式)
+  for (let i = 0; i < products.length; i++) {
+    if (products[i].price < 25) {
+      filtered.push(products[i]);
     }
-  }
-  render(filtered);
+  }  // 邏輯是新增一個for及條件篩選出需要的商品，而非刪除不在條件內的商品
+
+  // 顯示篩選後的結果
+  render(filtered);                                    // render呼叫第二次，參數為filtered陣列
 });
 </script>
-
+// sort排序、search搜尋，找尋方式idea:排序後取中間切著找
 </body>
   
 </html>
