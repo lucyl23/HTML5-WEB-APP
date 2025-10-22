@@ -15,3 +15,5 @@ week4作業JS Bin連結: https://jsbin.com/qamuluv/edit?html,output
 week6作業1的JS Bin連結: https://jsbin.com/saferil/edit?html,output
 
 week6作業2的JS Bin連結: https://jsbin.com/pafawec/edit?html,output
+
+week6作業3的JS Bin連結: https://jsbin.com/jocimic/edit?html,output
