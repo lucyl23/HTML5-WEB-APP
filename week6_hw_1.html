@@ -2,3 +2,82 @@
 詢問chatGPT，在版本2的基礎下，做出卡片後再綁定button事件。
 把版本2改為版本4的結果，會繞2次迴圈。
 -->
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品列表</title>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-6 bg-gray-100">
+
+<h1 class="text-2xl font-bold mb-4">陣列 + 迴圈 動態商品列表</h1>
+<div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+<script>
+// 商品資料陣列
+var products = [
+  { name: "商品 A", desc: "好吃又便宜", img: "https://picsum.photos/300/200?3" },
+  { name: "商品 B", desc: "人氣熱銷中", img: "https://picsum.photos/300/200?4" },
+  { name: "商品 C", desc: "限量特價",   img: "https://picsum.photos/300/200?5" }
+];
+
+// 取得容器
+var container = document.getElementById("productList");
+
+// 使用 for 迴圈動態產生每個商品卡片
+for (var i = 0; i < products.length; i++) {
+  var p = products[i];
+
+  // 用「字串串接」方式建立 HTML
+  var cardHtml = ''
+    + '<div class="card bg-base-100 shadow-xl p-2">'
+    + '  <figure><img src="' + p.img + '" alt="' + p.name + '"></figure>'
+    + '  <div class="card-body">'
+    + '    <h2 class="card-title">' + p.name + '</h2>'
+    + '    <p>' + p.desc + '</p>'
+    + '    <div class="card-actions justify-end">'
+    + '      <button class="btn btn-primary btn-buy" data-name="' + p.name + '">加入購物車</button>'
+    + '    </div>'
+    + '  </div>'
+    + '</div>';
+
+  // 將產生的卡片加到頁面上
+  container.innerHTML += cardHtml;
+}
+
+// === 🔽 新增這一段：按鈕綁定事件 ===
+var buttons = document.querySelectorAll(".btn-buy");    
+// 用document.querySelectorAll()在整個文件中選取所有符合.btn-buy（class 為 btn-buy）的元素，回傳一個NodeList（類陣列集合），存於buttons變數中。
+// 目的：把剛剛動態加入頁面的所有「加入購物車」按鈕抓出來，讓後面逐一綁定事件。
+buttons.forEach(function(btn) {      // 對buttons裡的每一個元素執行一次函式（iteration）。forEach的參數是一個callback，這裡把目前正在處理的按鈕命名為btn。
+  btn.addEventListener("click", function() {
+    var name = btn.getAttribute("data-name");   // 這行從按鈕元素讀取它的data-name屬性值，並把該值存到變數name。
+    // 在之前新增按鈕時我們把商品名稱放到了data-name="商品 A"，因此這裡可以拿到「商品 A」之類的文字。getAttribute() 是讀取HTML屬性（attribute）的方法。
+    alert("已選擇：" + name);
+  });
+});
+</script>
+
+</body>
+</html>
+
+<!--
+NodeList (類陣列集合)
+1. 有「順序」概念（第 0 個、第 1 個、第 2 個）
+2. 可以用索引存取，例如：
+buttons[0]   // 取得第一個按鈕
+buttons[1]   // 取得第二個
+3. 不是正統的 Array（陣列），沒有全部陣列的方法（例如 map()、filter()）。
+-->
+
+<!--
+forEach 是一個「重複執行」的方法，對集合裡的每一個東西，都執行同樣的動作。
+callback（回呼函式）=「交給 forEach 去呼叫的函式」。
+也就是你把一段程式（function）當成「指令」，交給 forEach。
+forEach 在每次迭代時，會「回頭呼叫（call back）」這段程式。
+==>buttons內的每樣東西都會執行btn函數內的動作。
+-->
