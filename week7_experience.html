@@ -75,3 +75,97 @@ input 輸入資料的地方
 .toLowerCase() 英文輸入時，將所有英文字轉為小寫
 字串.includes(keyword) 字串裡面包含(includes)要找的子字串(keyword)
 -->
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品列表 - 版本7（附註解）</title>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-6 bg-gray-100">
+
+<h1 class="text-2xl font-bold mb-4">商品排序</h1>
+
+<div class="mb-4 space-x-2">
+  <button id="ascBtn" class="btn btn-accent">價格升序</button>
+  <button id="descBtn" class="btn btn-accent">價格降序</button>
+</div>
+
+<div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+<script>
+// 商品資料（每個都是物件）
+const products = [
+  { name: "可樂", price: 35, desc: "經典汽水", img: "https://picsum.photos/300/200?41" },
+  { name: "果汁", price: 25, desc: "天然水果", img: "https://picsum.photos/300/200?42" },
+  { name: "礦泉水", price: 15, desc: "清涼解渴", img: "https://picsum.photos/300/200?43" },
+];
+
+// 頁面元素
+const container = document.getElementById("productList");
+const ascBtn = document.getElementById("ascBtn");
+const descBtn = document.getElementById("descBtn");
+
+// 顯示商品的函式
+function render(list){
+  container.innerHTML = "";
+  for(let i=0; i<list.length; i++){
+    const p = list[i];
+    container.innerHTML +=
+      '<div class="card bg-base-100 shadow-xl">' +
+        '<figure><img src="' + p.img + '" alt="' + p.name + '"></figure>' +
+        '<div class="card-body">' +
+          '<h2 class="card-title">' + p.name + '</h2>' +
+          '<p>' + p.desc + '</p>' +
+          '<p class="text-red-500 font-bold">價格：' + p.price + ' 元</p>' +
+        '</div>' +
+      '</div>';
+  }
+}
+
+// 初始顯示
+render(products);
+
+// 🔽 升序排列（小 → 大）
+ascBtn.addEventListener("click", function(){
+  /* 
+   sort()：用來重新排列陣列的順序。
+   - 它會修改原本的陣列！
+   - 傳入的函式 (a, b) 會用來比較兩個項目。
+
+   如果：
+     回傳「負數」 → a 會排在 b 前面
+     回傳「正數」 → a 會排在 b 後面
+     回傳「0」   → 位置不變
+  */
+
+  products.sort(function(a, b){                         // products陣列去排序sort，選兩個值去比(a,b)
+    // a.price 比 b.price 小時 → a - b 是負數 → a 排前
+    // 所以這樣是「由小排到大」
+    return a.price - b.price;                           // return True
+  });
+
+  render(products);
+});
+
+// 🔼 降序排列（大 → 小）
+descBtn.addEventListener("click", function(){
+  /*
+   這裡只是把順序反過來：
+   b.price - a.price 如果是正數，就代表 b 比 a 大，
+   讓 b 排在前面 → 變成從大到小。
+  */
+  products.sort(function(a, b){
+    return b.price - a.price;
+  });
+
+  render(products);
+});
+</script>
+
+</body>
+</html>
+
