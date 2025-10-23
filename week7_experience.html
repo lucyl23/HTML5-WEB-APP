@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品列表 - 搜尋功能</title>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-6 bg-gray-100">
+
+<h1 class="text-2xl font-bold mb-4">搜尋商品</h1>
+<input id="searchInput" type="text" placeholder="輸入關鍵字..." class="input input-bordered w-full max-w-xs mb-4" />
+// 為了拿到輸入的內容，將輸入的內容命名一個Id(唯一)
+<div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+<script>
+const products = [
+  { name: "紅茶", desc: "香醇好喝", price: 20, img: "https://picsum.photos/300/200?31" },
+  { name: "綠茶", desc: "清爽解渴", price: 18, img: "https://picsum.photos/300/200?32" },
+  { name: "奶茶", desc: "香濃甜美", price: 25, img: "https://picsum.photos/300/200?33" },
+];
+
+const container = document.getElementById("productList");
+const searchInput = document.getElementById("searchInput");    // 設定變數searchInput為找到Id="searchInput"
+
+function render(list){
+  container.innerHTML = "";
+  for(let i=0;i<list.length;i++){
+    const p = list[i];
+    container.innerHTML += `
+      <div class="card bg-base-100 shadow-xl">
+        <figure><img src="${p.img}" alt="${p.name}"></figure>
+        <div class="card-body">
+          <h2 class="card-title">${p.name}</h2>
+          <p>${p.desc}</p>
+          <p class="text-red-500 font-bold">價格：${p.price} 元</p>
+        </div>
+      </div>
+    `;
+  }
+}
+
+// 初始顯示全部
+render(products);
+
+// ✅ keyup 即時篩選
+searchInput.addEventListener("keyup", function(){
+  const keyword = searchInput.value.trim().toLowerCase();   
+  const filtered = [];
+  for(let i=0;i<products.length;i++){
+    const p = products[i];
+    // 名稱或描述包含輸入文字
+    if(p.name.toLowerCase().includes(keyword) || p.desc.toLowerCase().includes(keyword)){
+      filtered.push(p);
+    }
+  }
+  render(filtered);
+});
+</script>
+  
+</body>
+</html>
+
+<!--
+form 表單
+label 標籤
+input 輸入資料的地方
+-->
+
+<!--
+事件: keyup 有輸入資料時
+.value 取裡面的值
+.trim() 去頭去尾(空格/空白字元)
+.toLowerCase() 英文輸入時，將所有英文字轉為小寫
+字串.includes(keyword) 字串裡面包含(includes)要找的子字串(keyword)
+-->
