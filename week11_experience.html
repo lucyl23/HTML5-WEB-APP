@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8" />
+  <title>V2 - 讀取 Google Sheet（gviz/tq）</title>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+  <h2>Version 2 — 讀取 Google Sheet（只讀）</h2>
+  <div id="demo">讀取中...</div>
+
+  <script>
+    // 請替換成你的試算表 ID 與工作表名稱
+	var SHEET_ID = "1KEyIFQsu_JGUs5U7KlrTvNGFLUdJnB0aeoUKBUUvkIE";
+    var SHEET_NAME = "工作表1"; // 或你自己的工作表名稱
+
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(init);
+
+    function init() {
+      var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?sheet=' + encodeURIComponent(SHEET_NAME);
+      var query = new google.visualization.Query(url);
+      query.setQuery('select *');
+      query.send(processData);
+    }
+
+    function processData(response) {
+      if (response.isError()) {
+        document.getElementById('demo').innerText = '讀取失敗：' + response.getMessage();
+        return;
+      }
+
+      var data = response.getDataTable();
+      var rows = data.getNumberOfRows();
+      var cols = data.getNumberOfColumns();
+
+      var html = "<strong>讀到 " + rows + " 筆資料（顯示前 100 筆）</strong><br><br>";
+      for (var r = 0; r < rows && r < 100; r++) {
+        // 假設欄位順序為：A 客戶名稱, B 商品名稱, C 數量, D 單價, E 日期
+        html += data.getFormattedValue(r,0) + " 電話:" +
+                data.getFormattedValue(r,1) + "  訂:" +
+                data.getFormattedValue(r,2) + "  " +
+                data.getFormattedValue(r,3) + " 個 " +
+                (cols > 4 ? data.getFormattedValue(r,4) : "") +
+                "<br>";
+      }
+
+      document.getElementById('demo').innerHTML = html;
+    }
+  </script>
+</body>
+</html>
