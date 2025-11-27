@@ -100,3 +100,145 @@
 
 </body>
 </html>
+
+
+// ------------------------------------ GPT提供驗證電話, 數量使否符合格式-----------------------------------
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>線上訂單 Demo（送入 Google Form）</title>
+
+  <!-- Tailwind + DaisyUI CDN -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-base-200 p-6">
+
+  <div class="max-w-xl mx-auto bg-base-100 shadow-xl p-8 rounded-box">
+    <h1 class="text-3xl font-bold mb-6 text-center">線上訂單系統</h1>
+
+    <form id="orderForm" class="space-y-4">
+
+      <!-- 客戶名稱 -->
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">客戶姓名</span></div>
+        <input id="name" type="text" class="input input-bordered w-full"
+          placeholder="王小明" required />
+      </label>
+
+      <!-- 連絡電話 -->
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">連絡電話</span></div>
+        <input id="phone" type="tel"
+          placeholder="0912345678"
+          class="input input-bordered w-full" required />
+        <p id="phoneError" class="text-red-500 text-sm mt-1 hidden">請輸入正確的手機號碼（共 10 碼且開頭為 09）。</p>
+      </label>
+
+      <!-- 商品名稱 -->
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">商品名稱</span></div>
+        <input id="item" type="text"
+          placeholder="飲料"
+          class="input input-bordered w-full" required />
+      </label>
+
+      <!-- 數量 -->
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">訂購數量</span></div>
+        <input id="qty" type="number" min="1"
+          placeholder="1"
+          class="input input-bordered w-full" required />
+        <p id="qtyError" class="text-red-500 text-sm mt-1 hidden">請輸入正確的數量（必須為 1 以上的正整數）。</p>
+      </label>
+
+      <button type="submit" class="btn btn-primary w-full">送出訂單</button>
+
+    </form>
+
+    <p id="msg" class="text-center text-lg mt-4 font-semibold"></p>
+  </div>
+
+  <script>
+    const FORM_URL =
+      "https://docs.google.com/forms/d/e/1FAIpQLSeqxzx68AEqujIEBMzPduuL43r7gfyh-TH4etCaqxCNAKBeVw/formResponse";
+    
+    const ENTRY_NAME  = "entry.578948524";
+    const ENTRY_PHONE = "entry.1518396571";
+    const ENTRY_ITEM  = "entry.503482531";
+    const ENTRY_QTY   = "entry.1662416730";
+
+    // 驗證手機格式函式
+    function validatePhone(phone) {
+      return /^09\d{8}$/.test(phone);
+    }
+
+    // 驗證數量 > 0 且為整數
+    function validateQty(qty) {
+      return Number.isInteger(Number(qty)) && Number(qty) > 0;
+    }
+
+    document.getElementById("orderForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name  = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const item  = document.getElementById("item").value;
+      const qty   = document.getElementById("qty").value;
+
+      let valid = true;
+
+      // 檢查電話
+      if (!validatePhone(phone)) {
+        document.getElementById("phoneError").classList.remove("hidden");
+        valid = false;
+      } else {
+        document.getElementById("phoneError").classList.add("hidden");
+      }
+
+      // 檢查數量
+      if (!validateQty(qty)) {
+        document.getElementById("qtyError").classList.remove("hidden");
+        valid = false;
+      } else {
+        document.getElementById("qtyError").classList.add("hidden");
+      }
+
+      // 如果有錯誤，停止送出
+      if (!valid) {
+        document.getElementById("msg").innerText = "請修正紅字錯誤後再送出。";
+        return;
+      }
+
+      // 準備送出 Google Form
+      const formData = new FormData();
+      formData.append(ENTRY_NAME, name);
+      formData.append(ENTRY_PHONE, phone);
+      formData.append(ENTRY_ITEM, item);
+      formData.append(ENTRY_QTY, qty);
+
+      fetch(FORM_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+      })
+        .then(() => {
+          document.getElementById("msg").innerText = "訂單已送出！";
+          document.getElementById("orderForm").reset();
+        })
+        .catch(() => {
+          document.getElementById("msg").innerText = "送出失敗，請再試一次。";
+        });
+    });
+  </script>
+
+</body>
+</html>
+
