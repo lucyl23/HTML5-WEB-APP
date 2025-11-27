@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>線上訂單 Demo（送入 Google Form）</title>
+
+  <!-- Tailwind + DaisyUI CDN -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-base-200 p-6">
+
+  <div class="max-w-xl mx-auto bg-base-100 shadow-xl p-8 rounded-box">
+    <h1 class="text-3xl font-bold mb-6 text-center">線上訂單系統</h1>
+
+    <form id="orderForm" class="space-y-4">
+
+      <!-- 客戶名稱 -->
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">客戶姓名</span></div>
+        <input id="name" type="text" class="input input-bordered w-full"
+          placeholder="王小明" required />
+      </label>
+
+      <!-- 連絡電話 -->
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">連絡電話</span></div>
+        <input id="phone" type="tel"
+          placeholder="0912345678"
+          class="input input-bordered w-full" required />
+      </label>
+
+      <!-- 商品名稱 -->
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">商品名稱</span></div>
+        <input id="item" type="text"
+          placeholder="飲料"
+          class="input input-bordered w-full" required />
+      </label>
+
+      <!-- 數量 -->
+      <label class="form-control w-full">
+        <div class="label"><span class="label-text">訂購數量</span></div>
+        <input id="qty" type="number" min="1"
+          placeholder="1"
+          class="input input-bordered w-full" required />
+      </label>
+
+      <button type="submit" class="btn btn-primary w-full">送出訂單</button>
+
+    </form>
+
+    <p id="msg" class="text-center text-lg mt-4 font-semibold"></p>
+  </div>
+
+  <script>
+    // ★★★ Step 1：換成你的 Google Form 提交 URL ★★★
+    const FORM_URL =
+      "https://docs.google.com/forms/d/e/1FAIpQLSeqxzx68AEqujIEBMzPduuL43r7gfyh-TH4etCaqxCNAKBeVw/formResponse";
+    
+    // ★★★ Step 2：換成你的 Google Form 欄位 entry ID ★★★
+    const ENTRY_NAME  = "entry.578948524"; // 客戶姓名
+    const ENTRY_PHONE = "entry.1518396571"; // 連絡電話
+    const ENTRY_ITEM  = "entry.503482531"; // 商品名稱
+    const ENTRY_QTY   = "entry.1662416730"; // 數量
+
+    document.getElementById("orderForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name  = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const item  = document.getElementById("item").value;
+      const qty   = document.getElementById("qty").value;
+
+      const formData = new FormData();
+      formData.append(ENTRY_NAME, name);
+      formData.append(ENTRY_PHONE, phone);
+      formData.append(ENTRY_ITEM, item);
+      formData.append(ENTRY_QTY, qty);
+
+      fetch(FORM_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+      })
+        .then(() => {
+          document.getElementById("msg").innerText = "訂單已送出！";
+          document.getElementById("orderForm").reset();
+        })
+        .catch(() => {
+          document.getElementById("msg").innerText = "送出失敗，請再試一次。";
+        });
+    });
+  </script>
+
+</body>
+</html>
