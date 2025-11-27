@@ -17,3 +17,7 @@ week6作業1的JS Bin連結: https://jsbin.com/saferil/edit?html,output
 week6作業2的JS Bin連結: https://jsbin.com/pafawec/edit?html,output
 
 week6作業3的JS Bin連結: https://jsbin.com/jocimic/edit?html,output
+
+練習用google表單連結: https://docs.google.com/forms/d/1hKxdh8Jflbfm4ujpZqOOWckYCcXwN1j9rB5xWu1An2M/edit#responses
+
+練習用google sheet連結: https://docs.google.com/spreadsheets/d/1Mzy2V1W-Fps7S01Dja_FKCDlGHqsmn4wuTb6SZaDAUk/edit?usp=sharing
